@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+	<!-- 提供方应用信息，用于计算依赖关系 -->
+	 <dubbo:application name="service" />
+
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	 <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
+
+	<!--
+	Dubbo限制大数据传输的解决方案
+
+		第一种方案
+		修改提供方的dubbo配置，
+		在dubbo.properties 中增加如下
+		dubbo.protocol.dubbo.payload=11557050（默认为8M，即8388608）
+
+		第二种方案
+		1、在项目中集成MongoDB；
+		2、在service层把大容量数据存放到MongoDB中；
+		3、在web层从MongoDB中取出大容量数据。
+	-->
+
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	 <dubbo:protocol name="dubbo" port="20880" payload="16777216"/>
+
+	<!-- 监控中心配置 -->
+<!-- 	<dubbo:monitor protocol="registry"/> -->
+
+	 <dubbo:annotation />
+</beans>
